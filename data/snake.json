@@ -13,6 +13,14 @@
           { "q": "Eet smakelijk!", "a": "Guten Appetit!" }
         ]
       }
-    ]
+    ],
+    "Essen_2": [
+      {
+        "questions": [
+          { "q": "de vorken", "a": "die Gabeln" },
+          { "q": "de suiker", "a": "der Zucker" }
+        ]
+      }
+    ]  
   }
 }

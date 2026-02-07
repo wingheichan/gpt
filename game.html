@@ -14,6 +14,7 @@
   <script defer src="js/game-memory.js"></script>
   <script defer src="js/game-cloze.js"></script>
   <script defer src="js/game-shoot.js"></script>
+  <script defer src="js/game-snake.js"></script>
 </head>
 <body>
 
@@ -43,6 +44,7 @@
       <button class="seg-btn" data-target="panel-memory" aria-selected="false">🧠 Memory</button>
       <button class="seg-btn" data-target="panel-cloze" aria-selected="false">✍️ Fill in</button>
       <button class="seg-btn" data-target="panel-shoot" aria-selected="false">👾 Shoot </button>
+      <button class="seg-btn" data-target="panel-snake" aria-selected="false">🐍 Snake</button>
     </div>
     
     <section id="panel-quiz" class="top-panel card" role="tabpanel">
@@ -161,6 +163,40 @@
         <button id="shootRight" class="btn" aria-label="Move right">▶</button>
       </div>
     </section>
+
+    <section id="panel-snake" class="top-panel card" role="tabpanel">
+  <h1>Snake</h1>
+
+  <div class="hud">
+    <span class="pill"><span class="label">Time</span> <strong id="snakeTime">00:00</strong></span>
+    <span class="pill"><span class="label">Correct</span> <strong id="snakeCorrect">0</strong></span>
+    <span class="pill"><span class="label">Score</span> <strong id="snakeScore">0</strong></span>
+    <span class="pill"><span class="label">Highscore</span> <strong id="snakeHigh">0</strong></span>
+  </div>
+
+  <div class="controls">
+    <label>Speed
+      <select id="snakeSpeed">
+        <option value="slow">Slow</option>
+        <option value="normal">Normal</option>
+        <option value="fast">Fast</option>
+      </select>
+    </label>
+
+    <label>Category <select id="snakeCat"></select></label>
+    <label>Subcategory <select id="snakeSub"></select></label>
+    <button id="snakePreview" class="btn">Preview</button>
+    <button id="snakeStart" class="btn btn-primary">Start</button>
+  </div>
+
+  <div class="target-row">
+    <span class="label">Question:</span>
+    <span id="snakeQuestion"></span>
+  </div>
+
+  <canvas id="snakeCanvas" width="540" height="420" style="border:2px solid #445;border-radius:10px;background:#0b1020"></canvas>
+</section>
+
   </div>
 </main>
 <script>

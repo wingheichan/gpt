@@ -45,6 +45,7 @@
   const SIZE=20, COLS=27, ROWS=21;
   let snake, dir, foods, question, answer, index;
   let score=0, correct=0, running=false, interval;
+  let flash = null;
 
   function pickQuestion(){
     const list = DATA[selCat.value][selSub.value][0].questions;
@@ -113,7 +114,8 @@
         if(f.l === answer[index]){
           index++;
           score += 10;
-        
+          flash="green";
+
           // add body segment with letter
           snake.push({x: head.x, y: head.y, letter: f.l});
         
@@ -128,6 +130,7 @@
           }
           placeFoods();
         } else {
+          flash="red";
           score=Math.max(0,score-5);
           placeFoods();
         }
@@ -146,6 +149,13 @@
         ctx.font = "14px monospace";
         ctx.fillText(s.letter, s.x*SIZE+5, s.y*SIZE+15);
       }
+
+      if(flash){
+        ctx.fillStyle = flash==="green" ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        flash=null;
+      }
+
     });
 
 

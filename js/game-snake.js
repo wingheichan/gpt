@@ -120,27 +120,27 @@
       if(f.x===head.x && f.y===head.y){
     
         if(f.l === answer[index]){
-          index++;
-          eatenLetters.push(f.l);
-          score += 10;
-          flash="green";
-          grow++; // snake grows 1 segment
-    
-          // attach letter to NEW segment
-          snake[0].letter = f.l;
-    
-          updateQuestion();
-    
-          if(index >= answer.length){
-            correct++;
-            cOut.textContent = correct;
-            score += 50;
-            SFX.success();
-            pickQuestion();
-          }
-          placeFoods();
-    
-        } else {
+            //correct
+            index++;
+            eatenLetters.push(f.l);
+            score += 10;
+            flash="green";
+            grow++;
+          
+            // add new body segment with letter (tail will stay)
+            snake.push({x: head.x, y: head.y, letter: f.l});
+          
+            updateQuestion();
+          
+            if(index >= answer.length){
+              correct++;
+              cOut.textContent = correct;
+              score += 50;
+              SFX.success();
+              pickQuestion();
+            }
+            placeFoods();
+          } else {
           wrongCount++;
           score = Math.max(0, score-5);
           flash="red";
@@ -162,18 +162,20 @@
     }
 
     // draw snake
-    snake.forEach((s,i)=>{
-    ctx.fillStyle = i==0 ? "#22c55e" : "#16a34a";
-    ctx.fillRect(s.x*SIZE, s.y*SIZE, SIZE, SIZE);
-  
-    if(s.letter){
-      ctx.fillStyle="white";
-      ctx.font="bold 14px monospace";
-      ctx.textAlign="center";
-      ctx.textBaseline="middle";
-      ctx.fillText(s.letter, s.x*SIZE+SIZE/2, s.y*SIZE+SIZE/2);
-    }
-  });
+     snake.forEach((s,i)=>{
+      ctx.fillStyle = i==0 ? "#22c55e" : "#16a34a";
+      ctx.fillRect(s.x*SIZE, s.y*SIZE, SIZE, SIZE);
+    
+      if(i>0 && eatenLetters[i-1]){
+        ctx.fillStyle="white";
+        ctx.font="bold 14px monospace";
+        ctx.textAlign="center";
+        ctx.textBaseline="middle";
+        ctx.fillText(eatenLetters[i-1], s.x*SIZE+SIZE/2, s.y*SIZE+SIZE/2);
+      }
+    });
+
+
 
     if(flash){
       ctx.fillStyle = flash==="green" ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)";

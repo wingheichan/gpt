@@ -433,3 +433,7 @@ select {
   color:white;
 }
 
+#snakeCanvas {
+  touch-action: none;
+}
+

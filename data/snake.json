@@ -3,14 +3,8 @@
     "Essen_1": [
       {
         "questions": [
-          { "q": "de vorken", "a": "die Gabeln" },
-          { "q": "de suiker", "a": "der Zucker" },
-          { "q": "de borden", "a": "die Teller" },
-          { "q": "het toetje", "a": "der Nachtisch" },
-          { "q": "de lepel", "a": "der Löffel" },
           { "q": "genomen", "a": "genommen" },
-          { "q": "heet", "a": "heiß" },
-          { "q": "Eet smakelijk!", "a": "Guten Appetit!" }
+          { "q": "heet", "a": "heiß" }
         ]
       }
     ],

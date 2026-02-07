@@ -8,15 +8,6 @@
           { "q": "ert", "a": "ert" }
         ]
       }
-    ],
-    "Essen_2": [
-      {
-        "questions": [
-          { "q": "de", "a": "de" },
-          { "q": "tat", "a": "tat" },
-          { "q": "das", "a": "das" }
-        ]
-      }
     ]  
   }
 }

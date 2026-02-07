@@ -3,16 +3,18 @@
     "Essen_1": [
       {
         "questions": [
-          { "q": "genomen", "a": "genommen" },
-          { "q": "heet", "a": "heiß" }
+          { "q": "qw", "a": "qw" },
+          { "q": "ret", "a": "ret" },
+          { "q": "ert", "a": "ert" }
         ]
       }
     ],
     "Essen_2": [
       {
         "questions": [
-          { "q": "de vorken", "a": "die Gabeln" },
-          { "q": "de suiker", "a": "der Zucker" }
+          { "q": "de", "a": "de" },
+          { "q": "tat", "a": "tat" },
+          { "q": "das", "a": "das" }
         ]
       }
     ]  

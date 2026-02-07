@@ -50,7 +50,7 @@
   let snake = [];
   let eatenLetters = []; // persistent answer progress
   let wrongCount = 0;
-  
+  let grow = 0; // add globally
 
   function pickQuestion(){
     const list = DATA[selCat.value][selSub.value][0].questions;
@@ -103,37 +103,34 @@
     ctx.fillStyle="#0b1020";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
-    let head={...snake[0]};
+   let head={...snake[0]};
     if(dir==="LEFT") head.x--;
     if(dir==="RIGHT") head.x++;
     if(dir==="UP") head.y--;
     if(dir==="DOWN") head.y++;
-
-    // wrap screen
+    
     head.x=(head.x+COLS)%COLS;
     head.y=(head.y+ROWS)%ROWS;
     snake.unshift(head);
+
 
     // eat letters
     let eaten=false;
     foods.forEach(f=>{
       if(f.x===head.x && f.y===head.y){
-        eaten=true;
+    
         if(f.l === answer[index]){
-          eatenLetters.push(f.l);
           index++;
+          eatenLetters.push(f.l);
           score += 10;
           flash="green";
-          // grow snake with letter
-          snake.push({
-            x: head.x,
-            y: head.y,
-            letter: f.l
-          });
-        
+          grow++; // snake grows 1 segment
+    
+          // attach letter to NEW segment
+          snake[0].letter = f.l;
+    
           updateQuestion();
-
-        
+    
           if(index >= answer.length){
             correct++;
             cOut.textContent = correct;
@@ -142,47 +139,47 @@
             pickQuestion();
           }
           placeFoods();
-      } else {
-        wrongCount++;
-        score = Math.max(0, score - 5);
-      
-        if(wrongCount >= MAX_WRONG){
-          alert("Game Over 😵 Too many wrong letters!");
-          stopGame();
-          return;
+    
+        } else {
+          wrongCount++;
+          score = Math.max(0, score-5);
+          flash="red";
+    
+          if(wrongCount >= MAX_WRONG){
+            alert("Game Over 😵 Too many wrong letters!");
+            stopGame();
+            return;
+          }
+          placeFoods();
         }
-      
-        placeFoods();
-      }
       }
     });
 
-   // if(!eaten) snake.pop();
-    // only remove tail if NOT just eaten correct letter
-    if(eatenLetters.length < snake.length - 1){
-      snake.pop();
+    if(grow > 0){
+      grow--; // keep tail (snake grows)
+    } else {
+      snake.pop(); // normal movement
     }
+
     // draw snake
     snake.forEach((s,i)=>{
     ctx.fillStyle = i==0 ? "#22c55e" : "#16a34a";
     ctx.fillRect(s.x*SIZE, s.y*SIZE, SIZE, SIZE);
   
     if(s.letter){
-      ctx.fillStyle = "white";
-      ctx.font = "bold 14px monospace";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      ctx.fillStyle="white";
+      ctx.font="bold 14px monospace";
+      ctx.textAlign="center";
+      ctx.textBaseline="middle";
       ctx.fillText(s.letter, s.x*SIZE+SIZE/2, s.y*SIZE+SIZE/2);
     }
+  });
 
-      if(flash){
-        ctx.fillStyle = flash==="green" ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)";
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        flash=null;
-      }
-
-    });
-
+    if(flash){
+      ctx.fillStyle = flash==="green" ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      flash=null;
+    }
 
     // draw letters
     foods.forEach(f=>{

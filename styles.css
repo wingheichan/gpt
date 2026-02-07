@@ -422,3 +422,14 @@ select {
 
 @media (min-width: 700px) { .mobile-only { display: none; } }
 
+#panel-snake canvas {
+  display:block;
+  margin: 10px auto;
+  image-rendering: pixelated;
+}
+
+.snake-letter {
+  font-weight:bold;
+  color:white;
+}
+

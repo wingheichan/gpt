@@ -74,7 +74,7 @@
   }
 
   function start(){
-    snake=[{x:13,y:10}];
+    snake = [{x:13,y:10, letter:null}];
     dir="RIGHT";
     score=0; correct=0;
     sOut.textContent=0; cOut.textContent=0;
@@ -110,14 +110,19 @@
     foods.forEach(f=>{
       if(f.x===head.x && f.y===head.y){
         eaten=true;
-        if(f.l===answer[index]){
+        if(f.l === answer[index]){
           index++;
-          score+=10;
+          score += 10;
+        
+          // add body segment with letter
+          snake.push({x: head.x, y: head.y, letter: f.l});
+        
           updateQuestion();
-          if(index>=answer.length){
+        
+          if(index >= answer.length){
             correct++;
-            cOut.textContent=correct;
-            score+=50;
+            cOut.textContent = correct;
+            score += 50;
             SFX.success();
             pickQuestion();
           }
@@ -133,9 +138,16 @@
 
     // draw snake
     snake.forEach((s,i)=>{
-      ctx.fillStyle=i==0?"#22c55e":"#16a34a";
-      ctx.fillRect(s.x*SIZE,s.y*SIZE,SIZE,SIZE);
+      ctx.fillStyle = i==0 ? "#22c55e" : "#16a34a";
+      ctx.fillRect(s.x*SIZE, s.y*SIZE, SIZE, SIZE);
+    
+      if(s.letter){
+        ctx.fillStyle = "white";
+        ctx.font = "14px monospace";
+        ctx.fillText(s.letter, s.x*SIZE+5, s.y*SIZE+15);
+      }
     });
+
 
     // draw letters
     foods.forEach(f=>{
@@ -172,6 +184,30 @@
     if(e.key==="ArrowDown") dir="DOWN";
   });
 
+  // ----- MOBILE SWIPE CONTROLS -----
+  let touchStartX=0, touchStartY=0;
+  
+  canvas.addEventListener("touchstart", e=>{
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+  });
+  
+  canvas.addEventListener("touchend", e=>{
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+  
+    if(Math.abs(dx) > Math.abs(dy)){
+      if(dx > 20) dir = "RIGHT";
+      if(dx < -20) dir = "LEFT";
+    } else {
+      if(dy > 20) dir = "DOWN";
+      if(dy < -20) dir = "UP";
+    }
+  });
+
+  
   $('#snakeStart').addEventListener("click",start);
 
   $('#snakePreview').addEventListener("click",()=>{

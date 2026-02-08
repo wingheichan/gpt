@@ -53,27 +53,30 @@
   let wrongCount = 0;
   let grow = 0; 
   let questionPool = [];
+  let totalQuestions = 0;
+  let finished = false;
 
   function pickQuestion(){
-  const list = DATA[selCat.value][selSub.value][0].questions;
-
-  // refill pool if empty
-  if(questionPool.length === 0){
-    questionPool = [...list].sort(()=>Math.random()-0.5);
+  
+    if(questionPool.length === 0){
+      // ALL QUESTIONS DONE
+      finished = true;
+      finish(); // leaderboard save
+      alert("🎉 All questions finished!");
+      return;
+    }
+  
+    question = questionPool.pop();
+    answer = question.a.toUpperCase();
+  
+    eatenLetters = [];
+    index = 0;
+    grow = 0;
+  
+    updateQuestion();
   }
 
-  question = questionPool.pop(); // take one, no repeat
-  answer = question.a.toUpperCase();
-
- // snake = [{x:13, y:10}]; reset snake
-  eatenLetters = [];
-  index = 0;
-  grow = 0;
-
-  updateQuestion();
-}
-
-
+  
   function updateQuestion(){
     qOut.textContent = question.q + " → " +
       answer.slice(0,index) + "_".repeat(answer.length-index);
@@ -94,6 +97,11 @@
   }
 
   function start(){
+    const list = DATA[selCat.value][selSub.value][0].questions;
+    questionPool = [...list].sort(()=>Math.random()-0.5);
+    totalQuestions = list.length;
+    finished = false;
+    
     snake = [{x:13,y:10, letter:null}];
     dir="RIGHT";
     score=0; correct=0;
@@ -113,6 +121,8 @@
   }
 
   function loop(){
+    if(finished) return;
+
     ctx.fillStyle="#0b1020";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 

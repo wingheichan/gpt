@@ -65,7 +65,7 @@
   question = questionPool.pop(); // take one, no repeat
   answer = question.a.toUpperCase();
 
-  snake = [{x:13, y:10}];
+ // snake = [{x:13, y:10}]; reset snake
   eatenLetters = [];
   index = 0;
   grow = 0;

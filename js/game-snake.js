@@ -57,6 +57,20 @@
   let totalQuestions = 0;
   let finished = false;
 
+  function speakQuestion(text) {
+    if (!window.speechSynthesis) return;
+  
+    const lang = document.getElementById("ttsLang").value;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = lang;
+    utter.rate = 0.9;   // slower for learning
+    utter.pitch = 1;
+  
+    window.speechSynthesis.cancel(); // stop previous
+    window.speechSynthesis.speak(utter);
+  }
+
+  
   function pickQuestion(){
   
     if(questionPool.length === 0){
@@ -138,8 +152,7 @@
     head.x=(head.x+COLS)%COLS;
     head.y=(head.y+ROWS)%ROWS;
     snake.unshift(head);
-snake.pop(); // normal move
-
+    snake.pop(); // normal move
 
     // eat letters
     let eaten=false;
@@ -181,18 +194,13 @@ snake.pop(); // normal move
       }
     });
 
-   // if(grow > 0){
-     // grow--; // keep tail (snake grows)
-    //} else {
-      //snake.pop(); // normal movement
-   // }
 
-// grow ONLY when correct letter
-if(grow > 0){
-  grow--;
-  snake.push({...snake[snake.length-1]});
-}
-    
+    // grow ONLY when correct letter
+    if(grow > 0){
+      grow--;
+      snake.push({...snake[snake.length-1]});
+    }
+        
     // draw snake
      snake.forEach((s,i)=>{
       ctx.fillStyle = i==0 ? "#22c55e" : "#16a34a";
@@ -206,8 +214,6 @@ if(grow > 0){
         ctx.fillText(eatenLetters[i-1], s.x*SIZE+SIZE/2, s.y*SIZE+SIZE/2);
       }
     });
-
-
 
     if(flash){
       ctx.fillStyle = flash==="green" ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)";

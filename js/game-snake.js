@@ -125,6 +125,7 @@
     head.x=(head.x+COLS)%COLS;
     head.y=(head.y+ROWS)%ROWS;
     snake.unshift(head);
+snake.pop(); // normal move
 
 
     // eat letters
@@ -167,12 +168,18 @@
       }
     });
 
-    if(grow > 0){
-      grow--; // keep tail (snake grows)
-    } else {
-      snake.pop(); // normal movement
-    }
+   // if(grow > 0){
+     // grow--; // keep tail (snake grows)
+    //} else {
+      //snake.pop(); // normal movement
+   // }
 
+// grow ONLY when correct letter
+if(grow > 0){
+  grow--;
+  snake.push({...snake[snake.length-1]});
+}
+    
     // draw snake
      snake.forEach((s,i)=>{
       ctx.fillStyle = i==0 ? "#22c55e" : "#16a34a";

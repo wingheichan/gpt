@@ -19,6 +19,7 @@
 
   const timer = new Timer(tOut);
   const livesOut = $('#snakeLives');
+  const qIndexOut = $('#snakeQIndex');
 
   function fill(sel, items) {
     sel.innerHTML='';
@@ -72,7 +73,9 @@
     eatenLetters = [];
     index = 0;
     grow = 0;
-  
+
+    qIndexOut.textContent = `${totalQuestions - questionPool.length}/${totalQuestions}`;
+
     updateQuestion();
   }
 

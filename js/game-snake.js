@@ -18,6 +18,7 @@
   const hOut = $('#snakeHigh');
 
   const timer = new Timer(tOut);
+  const livesOut = $('#snakeLives');
 
   function fill(sel, items) {
     sel.innerHTML='';
@@ -50,17 +51,28 @@
   let snake = [];
   let eatenLetters = []; // persistent answer progress
   let wrongCount = 0;
-  let grow = 0; // add globally
+  let grow = 0; 
+  let questionPool = [];
 
   function pickQuestion(){
-    const list = DATA[selCat.value][selSub.value][0].questions;
-    question = list[Math.floor(Math.random()*list.length)];
-    answer = question.a.toUpperCase();
-    snake = [{x:13, y:10, letter:null}];
-    eatenLetters = [];
-    index=0;
-    updateQuestion();
+  const list = DATA[selCat.value][selSub.value][0].questions;
+
+  // refill pool if empty
+  if(questionPool.length === 0){
+    questionPool = [...list].sort(()=>Math.random()-0.5);
   }
+
+  question = questionPool.pop(); // take one, no repeat
+  answer = question.a.toUpperCase();
+
+  snake = [{x:13, y:10}];
+  eatenLetters = [];
+  index = 0;
+  grow = 0;
+
+  updateQuestion();
+}
+
 
   function updateQuestion(){
     qOut.textContent = question.q + " → " +
@@ -87,6 +99,7 @@
     score=0; correct=0;
     sOut.textContent=0; cOut.textContent=0;
     wrongCount = 0;
+    livesOut.textContent = MAX_WRONG;
 
     pickQuestion();
     placeFoods();
@@ -118,36 +131,35 @@
     let eaten=false;
     foods.forEach(f=>{
       if(f.x===head.x && f.y===head.y){
-    
+     
         if(f.l === answer[index]){
-            //correct
-            index++;
-            eatenLetters.push(f.l);
-            score += 10;
-            flash="green";
-            grow++;
-          
-            // add new body segment with letter (tail will stay)
-            snake.push({x: head.x, y: head.y, letter: f.l});
-          
-            updateQuestion();
-          
-            if(index >= answer.length){
-              correct++;
-              cOut.textContent = correct;
-              score += 50;
-              SFX.success();
-              pickQuestion();
-            }
-            placeFoods();
-          } else {
+          index++;
+          eatenLetters.push(f.l);
+          score += 10;
+          flash="green";
+        
+          grow++; // ONLY this, NO snake.push()
+     // add new body segment with letter (tail will stay)
+            //snake.push({x: head.x, y: head.y, letter: f.l});   
+          updateQuestion();
+        
+          if(index >= answer.length){
+            correct++;
+            cOut.textContent = correct;
+            score += 50;
+            SFX.success();
+            pickQuestion();
+          }
+          placeFoods();
+        } else {
           wrongCount++;
+          livesOut.textContent = MAX_WRONG - wrongCount;
           score = Math.max(0, score-5);
           flash="red";
     
           if(wrongCount >= MAX_WRONG){
             alert("Game Over 😵 Too many wrong letters!");
-            stopGame();
+            finish(); //save leaderboard
             return;
           }
           placeFoods();

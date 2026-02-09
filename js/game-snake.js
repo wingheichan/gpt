@@ -87,7 +87,11 @@
     eatenLetters = [];
     index = 0;
     grow = 0;
-
+    
+    // ✅ RESET SNAKE LENGTH EVERY QUESTION
+    snake = [{x:13, y:10}]; 
+    dir = "RIGHT";
+    
     qIndexOut.textContent = `${totalQuestions - questionPool.length}/${totalQuestions}`;
 
     updateQuestion();

@@ -214,7 +214,7 @@
     
       if(i>0 && eatenLetters[i-1]){
         ctx.fillStyle="white";
-        ctx.font="bold 14px monospace";
+        ctx.font="bold 16px Arial";
         ctx.textAlign="center";
         ctx.textBaseline="middle";
         ctx.fillText(eatenLetters[i-1], s.x*SIZE+SIZE/2, s.y*SIZE+SIZE/2);

@@ -72,7 +72,9 @@
 
   
   function pickQuestion(){
-  
+    wrongCount = 0;
+    livesOut.textContent = MAX_WRONG;
+
     if(questionPool.length === 0){
       // ALL QUESTIONS DONE
       finished = true;
@@ -118,7 +120,7 @@
   }
 
   function start(){
-    const list = DATA[selCat.value][selSub.value][0].questions;
+    const list = DATA[selCat.value][selSub.value];
     questionPool = [...list].sort(()=>Math.random()-0.5);
     totalQuestions = list.length;
     finished = false;
@@ -287,7 +289,7 @@
   $('#snakeStart').addEventListener("click",start);
 
   $('#snakePreview').addEventListener("click",()=>{
-    const list=DATA[selCat.value][selSub.value][0].questions;
+    const list=DATA[selCat.value][selSub.value];
     showPreview("Snake Preview", list.map(q=>q.q+" → "+q.a).join("<br>"));
   });
 

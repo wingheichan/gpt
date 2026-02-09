@@ -232,6 +232,9 @@
       ctx.fillStyle="#facc15";
       ctx.fillRect(f.x*SIZE,f.y*SIZE,SIZE,SIZE);
       ctx.fillStyle="#000";
+      ctx.font = "bold 18px monospace";   // 🔥 CHANGE SIZE + BOLD
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
       ctx.fillText(f.l,f.x*SIZE+6,f.y*SIZE+14);
     });
 

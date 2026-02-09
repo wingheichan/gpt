@@ -1,13 +1,9 @@
 {
   "German": {
     "Essen_1": [
-      {
-        "questions": [
-          { "q": "qw", "a": "qw" },
-          { "q": "ret", "a": "ret" },
-          { "q": "ert", "a": "ert" }
-        ]
-      }
+        { "q": "qw", "a": "qw" },
+        { "q": "ret", "a": "ret" },
+        { "q": "ert", "a": "ert" }
     ]  
   }
 }

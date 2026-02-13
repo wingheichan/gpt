@@ -257,13 +257,20 @@
     }));
   }
 
-  document.addEventListener("keydown",e=>{
-    if(!running) return;
-    if(e.key==="ArrowLeft") dir="LEFT";
-    if(e.key==="ArrowRight") dir="RIGHT";
-    if(e.key==="ArrowUp") dir="UP";
-    if(e.key==="ArrowDown") dir="DOWN";
-  });
+  document.addEventListener("keydown", e=>{
+  if(!running) return;
+
+  // Stop page scrolling
+  if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)){
+    e.preventDefault();
+  }
+
+  if(e.key==="ArrowLeft" && dir!=="RIGHT") dir="LEFT";
+  if(e.key==="ArrowRight" && dir!=="LEFT") dir="RIGHT";
+  if(e.key==="ArrowUp" && dir!=="DOWN") dir="UP";
+  if(e.key==="ArrowDown" && dir!=="UP") dir="DOWN";
+});
+
 
   // ----- MOBILE SWIPE CONTROLS -----
   let touchStartX=0, touchStartY=0;

@@ -21,6 +21,26 @@
   const livesOut = $('#snakeLives');
   const qIndexOut = $('#snakeQIndex');
 
+  const VOWELS = ["A","E","I","O","U"];
+  const SIMILAR_CONSONANTS = {
+    D: ["T","B","C","H"],
+    T: ["D","C","K","H"],
+    S: ["C","K","Z","H"],
+    C: ["S","K","T","H"],
+    K: ["C","S","T","H"],
+    B: ["D","P","G","H"],
+    P: ["B","T","K","H"],
+    G: ["K","C","D","H"],
+    F: ["V","S","H","P"],
+    V: ["F","B","Z","H"],
+    M: ["N","B","H","P"],
+    N: ["M","D","T","H"],
+    L: ["R","H","T","D"],
+    R: ["L","H","T","D"],
+    H: ["D","T","C","S"]
+  };
+  
+  
   function fill(sel, items) {
     sel.innerHTML='';
     items.forEach(v=>sel.append(new Option(v,v)));
@@ -105,19 +125,47 @@
       answer.slice(0,index) + "_".repeat(answer.length-index);
   }
 
-  function placeFoods(){
-    foods=[];
+   function placeFoods(){
+    foods = [];
     const correct = answer[index];
-    const alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let pool=[correct];
-    while(pool.length<5){
-      let l=alphabet[Math.floor(Math.random()*26)];
-      if(!pool.includes(l)) pool.push(l);
+    let pool = [correct];
+  
+    // CASE 1: vowel
+    if(VOWELS.includes(correct)){
+      let vowels = VOWELS.filter(v => v !== correct);
+      vowels.sort(()=>Math.random()-0.5);
+      pool = [correct, ...vowels.slice(0,4)];
     }
+  
+    // CASE 2: consonant with similar letters
+    else if(SIMILAR_CONSONANTS[correct]){
+      let sim = [...SIMILAR_CONSONANTS[correct]];
+      sim.sort(()=>Math.random()-0.5);
+      pool = [correct, ...sim.slice(0,4)];
+    }
+  
+    // CASE 3: fallback random consonants
+    else {
+      const alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      while(pool.length < 5){
+        let l = alphabet[Math.floor(Math.random()*26)];
+        if(!pool.includes(l)) pool.push(l);
+      }
+    }
+  
+    // Shuffle cubes
+    pool.sort(()=>Math.random()-0.5);
+  
+    // Place cubes randomly
     pool.forEach(l=>{
-      foods.push({l,x:Math.floor(Math.random()*COLS),y:Math.floor(Math.random()*ROWS)});
+      foods.push({
+        l,
+        x: Math.floor(Math.random()*COLS),
+        y: Math.floor(Math.random()*ROWS)
+      });
     });
   }
+
 
   function start(){
     const list = DATA[selCat.value][selSub.value];
